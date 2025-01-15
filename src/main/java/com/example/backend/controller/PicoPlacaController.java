@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @RestController
 @RequestMapping("/api/picoplaca")
@@ -22,14 +23,13 @@ public class PicoPlacaController {
         System.out.println("Placa: " + request.getPlaca());
         System.out.println("Timestamp: " + request.getTimestamp());
 
-        // Convertir timestamp a LocalDate y LocalTime
-        long timestamp = request.getTimestamp();
-        LocalDate fechaConsulta = Instant.ofEpochMilli(timestamp)
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-        LocalTime horaConsulta = Instant.ofEpochMilli(timestamp)
-                .atZone(ZoneId.systemDefault())
-                .toLocalTime();
+        ZoneId zonaHoraria = ZoneId.of("America/Guayaquil");
+
+        ZonedDateTime zonedDateTime = Instant.ofEpochMilli(request.getTimestamp())
+                .atZone(zonaHoraria);
+
+        LocalDate fechaConsulta = zonedDateTime.toLocalDate();
+        LocalTime horaConsulta = zonedDateTime.toLocalTime();
 
 
         System.out.println("Fecha: " + fechaConsulta);
